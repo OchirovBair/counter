@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import {FlexWrapper} from "../components/FlexWrapper";
-import {theme} from "../styles/theme";
+import {FlexWrapper} from "../../components/FlexWrapper";
+import {theme} from "../../styles/theme";
 
 const NumWrapperStyle =  styled.div`
     border: 1px solid ${theme.color.accent};
@@ -19,11 +19,14 @@ const ButtonWrapperStyle =  styled(FlexWrapper)`
     padding: 10px;
 `
 
-const CounterWrapperStyle = styled(FlexWrapper)`
+const CounterDisplayWrapperStyle = styled(FlexWrapper)`
     border: 1px solid ${theme.color.accent};
     padding: 10px;
     border-radius: 10px;
-    width: 700px;
+    max-width: 300px;
+    width: 100%;
+    max-height: 150px;
+    height: 100%;
 `
 
 type H1TypeProps = {
@@ -34,20 +37,11 @@ const StyledH1 = styled.h1<H1TypeProps>`
     color: ${props => props.$color};
 `
 
-type StyledInputProps = {
-    $bgc: string
-}
 
-const StyledInput = styled.input.attrs(({type})=>({
-    type: type || 'number',
-}))<StyledInputProps>`
-    background-color: ${props => props.$bgc || 'white'};
-`
 
 export const S = {
     NumWrapperStyle,
     ButtonWrapperStyle,
-    CounterWrapperStyle,
+    CounterDisplayWrapperStyle,
     StyledH1,
-    StyledInput,
 }

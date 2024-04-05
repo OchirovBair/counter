@@ -4,11 +4,11 @@ import {isDisabled} from "@testing-library/user-event/dist/utils";
 
 type ButtonPropsType = {
     title: string
-    onClick: ()=>void
-    isDisabled:boolean
+    onClick?: ()=>void
+    isDisabled?:boolean
 }
 
-export const Button = ({onClick, title, isDisabled}: ButtonPropsType) => {
+export const Button = ({onClick = ()=>{}, title, isDisabled = false}: ButtonPropsType) => {
     const onClickHandler = () => {
         onClick()
     }

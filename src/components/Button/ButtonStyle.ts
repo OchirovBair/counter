@@ -6,7 +6,7 @@ type ButtonPropsType = {
 }
 
 const ButtonStyle = styled.button<ButtonPropsType>`
-    padding: 5px;
+    padding: 5px 10px;
     background-color: ${theme.color.accent};
     font-weight: 700;
     color: ${theme.color.bgc};

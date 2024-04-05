@@ -1,16 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import './App.css';
 import {Counter} from "./Counter/Counter";
-import {S} from "./AppStyle";
-import {CounterSettings} from "./Counter/CounterSettings/CounterSettings";
+import {BrowserRouter} from "react-router-dom";
 
 function App() {
     return (
-        <S.AppStyle $align={'center'} $justify={'center'}>
+        <>
             <Counter/>
-            {/*<CounterSettings setIsValueSet={()=>{}}*/}
-            {/*                 getSettingError={()=>{}}/>*/}
-        </S.AppStyle>
+        </>
     );
 }
 
