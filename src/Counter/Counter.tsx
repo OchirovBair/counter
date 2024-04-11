@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {S} from "./Counter_Style";
+import React, {useState} from 'react';
 import {CounterDisplay} from "./CounterDisplay/CounterDisplay";
-import {CounterSettings} from './CounterSettings/CounterSettings';
-import {Navigate, Route, Routes} from 'react-router-dom';
-import {Error} from "./Error/Error";
+import {CounterSettings} from "./CounterSettings/CounterSettings";
 
-type CounterPropsType = {}
+type CounterPropsType = {
+    version: string
+    setChooseV: (ver: string) => void
+}
 
-export const Counter = ({}: CounterPropsType) => {
+export const Counter = ({version, setChooseV}: CounterPropsType) => {
     const defaultStartValue = 0
     const defaultMaxValue = 3
     const locStorageStartValue = Number(localStorage.getItem('startValue')) || defaultStartValue
@@ -16,9 +16,9 @@ export const Counter = ({}: CounterPropsType) => {
     const [counterValue, setCounterValue] = useState<number>(locStorageStartValue)
     const [error, setError] = useState(false)
     const [isValueSet, setIsValueSet] = useState(false)
-
-    let incDisButton = counterValue >= locStorageMaxValue
-    let resetDisButton = counterValue <= locStorageStartValue
+    console.log(counterValue)
+    let incButtonError = counterValue >= locStorageMaxValue
+    let resetButtonError = counterValue <= locStorageStartValue
 
     const increaseNumber = () => {
         setCounterValue(counterValue + 1)
@@ -36,53 +36,44 @@ export const Counter = ({}: CounterPropsType) => {
         setError(settingError)
     }
 
-
-    useEffect(() => {
-        setCounterValue(locStorageStartValue)
-    }, [locStorageStartValue])
-
     return (
-        <S.CounterWrapperStyle $gap={'20px'} $justify={'center'} $align={'center'}>
-            <Routes>
-                <Route path={'/'} element={<Navigate to={'/settings'}/>}/>
-
-                <Route path={'/settings'} element={
-                    <CounterSettings
-                        defaultStartValue={defaultStartValue}
-                        defaultMaxValue={defaultMaxValue}
-                        setIsValueSet={setIsValueSet}
-                        getSettingError={getSettingError}/>}/>
-
-
-                <Route path={'/display'} element={
-                    <CounterDisplay
-                        incButtonCondition={incDisButton}
-                        resetButtonCondition={resetDisButton}
+        version === 'v1'
+            ? (<>
+                {isValueSet
+                    ? <CounterDisplay
+                        incButtonError={incButtonError}
+                        resetButtonError={resetButtonError}
                         counterValue={counterValue}
                         increaseNumber={increaseNumber}
                         settingError={error}
                         isValueSet={isValueSet}
                         setSettings={setSettings}
                         resetNumber={resetNumber}/>
-                }/>
-
-                <Route path={'/*'} element={<Error/>}/>
-            </Routes>
-            {/*<CounterSettings*/}
-            {/*    defaultStartValue={defaultStartValue}*/}
-            {/*    defaultMaxValue={defaultMaxValue}*/}
-            {/*    setIsValueSet={setIsValueSet}*/}
-            {/*    getSettingError={getSettingError}/>*/}
-            {/*<CounterDisplay*/}
-            {/*    incButtonCondition={incDisButton}*/}
-            {/*    resetButtonCondition={resetDisButton}*/}
-            {/*    counterValue={counterValue}*/}
-            {/*    increaseNumber={increaseNumber}*/}
-            {/*    settingError={error}*/}
-            {/*    isValueSet={isValueSet}*/}
-            {/*    setSettings={setSettings}*/}
-            {/*    resetNumber={resetNumber}/>*/}
-        </S.CounterWrapperStyle>
-    );
+                    : <CounterSettings
+                        defaultStartValue={defaultStartValue}
+                        defaultMaxValue={defaultMaxValue}
+                        setIsValueSet={setIsValueSet}
+                        getSettingError={getSettingError}
+                        setChooseV={setChooseV}
+                        setCounterValue={setCounterValue}/>}
+            </>)
+            : (<>
+                <CounterSettings
+                    defaultStartValue={defaultStartValue}
+                    defaultMaxValue={defaultMaxValue}
+                    setIsValueSet={setIsValueSet}
+                    getSettingError={getSettingError}
+                    setChooseV={setChooseV}
+                    setCounterValue={setCounterValue}/>
+                <CounterDisplay
+                    incButtonError={incButtonError}
+                    resetButtonError={resetButtonError}
+                    counterValue={counterValue}
+                    increaseNumber={increaseNumber}
+                    settingError={error}
+                    isValueSet={isValueSet}
+                    setSettings={setSettings}
+                    resetNumber={resetNumber}/>
+            </>)
+    )
 };
-

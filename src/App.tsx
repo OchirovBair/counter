@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import {Counter} from "./Counter/Counter";
+import {Choose} from "./Choose/Choose";
 
 function App() {
     return (
         <>
-            <Counter/>
+            <Choose/>
         </>
     );
 }
