@@ -7,6 +7,9 @@ import {FlexWrapper} from "../../components/FlexWrapper";
 type CounterSettingsPropsType = {
     defaultStartValue: number
     defaultMaxValue: number
+    setDefaultMaxValue: (value: number) => void
+    setDefaultStartValue: (value: number) => void
+
 
     getSettingError: (error: boolean) => void
     setIsValueSet: (IsValueSet: boolean) => void
@@ -20,12 +23,14 @@ export const CounterSettings = ({
                                     setIsValueSet,
                                     getSettingError,
                                     setChooseV,
-                                    setCounterValue
+                                    setCounterValue,
+                                    setDefaultStartValue,
+                                    setDefaultMaxValue
                                 }: CounterSettingsPropsType) => {
-    if (localStorage.getItem('maxValue') && localStorage.getItem('startValue')) {
-        defaultStartValue = Number(localStorage.getItem('startValue'))
-        defaultMaxValue = Number(localStorage.getItem('maxValue'))
-    }
+    // if (localStorage.getItem('maxValue') && localStorage.getItem('startValue')) {
+    //     defaultStartValue = Number(localStorage.getItem('startValue'))
+    //     defaultMaxValue = Number(localStorage.getItem('maxValue'))
+    // }
 
     const [startValueInput, setStartValueInput] = useState(defaultStartValue)
     const [startValueInputError, setStartValueInputError] = useState(false)
@@ -65,8 +70,10 @@ export const CounterSettings = ({
     const setButtonHandler = () => {
         setDisSetButton(true)
         setIsValueSet(true)
-        localStorage.setItem('maxValue', JSON.stringify(maxValueInput))
-        localStorage.setItem('startValue', JSON.stringify(startValueInput))
+        // localStorage.setItem('maxValue', JSON.stringify(maxValueInput))
+        // localStorage.setItem('startValue', JSON.stringify(startValueInput))
+        setDefaultStartValue(startValueInput)
+        setDefaultMaxValue(maxValueInput)
     }
 
     const chooseButtonHandler = () => {

@@ -6,36 +6,38 @@ import {Button} from "../../components/Button/Button";
 type CounterDisplayPropsType = {
     incButtonError: boolean
     resetButtonError: boolean
-    settingError: boolean
+    error: boolean
     isValueSet: boolean
     counterValue: number
     increaseNumber: () => void
     resetNumber: () => void
     setSettings: () => void
+    version:string
 }
 
 export const CounterDisplay = ({
                                    isValueSet,
-                                   settingError,
+                                   error,
                                    increaseNumber,
                                    resetNumber,
                                    counterValue,
                                    resetButtonError,
                                    incButtonError,
-                                   setSettings
+                                   setSettings,
+                                   version
                                }: CounterDisplayPropsType) => {
     return (
         <S.CounterDisplayWrapperStyle $direction={'column'} $gap={'10px'} $align={'center'}>
             <S.NumWrapperStyle>
                 <S.StyledH1
-                    $color={incButtonError || settingError ? theme.color.error.font : theme.color.accent}>{settingError ? 'Incorrect value' : isValueSet ? counterValue : 'Set value'}</S.StyledH1>
+                    $color={incButtonError || error ? theme.color.error.font : theme.color.accent}>{error ? 'Incorrect value' : isValueSet ? counterValue : 'Set value'}</S.StyledH1>
             </S.NumWrapperStyle>
             <S.ButtonWrapperStyle $justify={'space-around'}>
                 <Button title={'inc'} onClick={increaseNumber}
-                        isDisabled={incButtonError || settingError || !isValueSet}/>
+                        isDisabled={incButtonError || error || !isValueSet}/>
                 <Button title={'reset'} onClick={resetNumber}
-                        isDisabled={resetButtonError || settingError || !isValueSet}/>
-                <Button title={'settings'} onClick={setSettings}/>
+                        isDisabled={resetButtonError || error || !isValueSet}/>
+                {version === 'v2' || <Button title={'settings'} onClick={setSettings}/>}
             </S.ButtonWrapperStyle>
         </S.CounterDisplayWrapperStyle>
     );
