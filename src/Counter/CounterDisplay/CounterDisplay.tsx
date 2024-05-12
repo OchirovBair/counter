@@ -2,15 +2,13 @@ import React from 'react';
 import {S} from "./CounterDisplay_Style";
 import {theme} from "../../styles/theme";
 import {Button} from "../../components/Button/Button";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "../../state/store";
+import {increaseCounterAC, resetCounterAC} from "../../state/counterReducer";
 
 type CounterDisplayPropsType = {
-    incButtonError: boolean
-    resetButtonError: boolean
     error: boolean
     isValueSet: boolean
-    counterValue: number
-    increaseNumber: () => void
-    resetNumber: () => void
     setSettings: () => void
     version:string
 }
@@ -18,14 +16,20 @@ type CounterDisplayPropsType = {
 export const CounterDisplay = ({
                                    isValueSet,
                                    error,
-                                   increaseNumber,
-                                   resetNumber,
-                                   counterValue,
-                                   resetButtonError,
-                                   incButtonError,
                                    setSettings,
                                    version
                                }: CounterDisplayPropsType) => {
+    const counterValue = useSelector<AppRootStateType, number>(state => state.counter.currentValue)
+    const incButtonError = useSelector<AppRootStateType, boolean>(state => state.counter.incButtonError)
+    const resetButtonError = useSelector<AppRootStateType, boolean>(state => state.counter.resetButtonError)
+    const dispatch = useDispatch()
+    const increaseNumber = () => {
+        dispatch(increaseCounterAC())
+    }
+
+    const resetNumber = () => {
+        dispatch(resetCounterAC())
+    }
     return (
         <S.CounterDisplayWrapperStyle $direction={'column'} $gap={'10px'} $align={'center'}>
             <S.NumWrapperStyle>

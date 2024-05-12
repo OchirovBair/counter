@@ -3,65 +3,50 @@ import {S} from "./CounterSettings_Style";
 import {theme} from "../../styles/theme";
 import {Button} from "../../components/Button/Button";
 import {FlexWrapper} from "../../components/FlexWrapper";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "../../state/store";
+import {setMaxCounterValueAC, setMinCounterValueAC} from "../../state/counterReducer";
 
 type CounterSettingsPropsType = {
-    defaultStartValue: number
-    defaultMaxValue: number
-    setDefaultMaxValue: (value: number) => void
-    setDefaultStartValue: (value: number) => void
-
-
     getSettingError: (error: boolean) => void
     setIsValueSet: (IsValueSet: boolean) => void
     setChooseV: (ver: string) => void
-    setCounterValue: (value: number) => void
 }
 
 export const CounterSettings = ({
-                                    defaultStartValue,
-                                    defaultMaxValue,
                                     setIsValueSet,
                                     getSettingError,
                                     setChooseV,
-                                    setCounterValue,
-                                    setDefaultStartValue,
-                                    setDefaultMaxValue
                                 }: CounterSettingsPropsType) => {
-    // if (localStorage.getItem('maxValue') && localStorage.getItem('startValue')) {
-    //     defaultStartValue = Number(localStorage.getItem('startValue'))
-    //     defaultMaxValue = Number(localStorage.getItem('maxValue'))
-    // }
+    const dispatch = useDispatch()
+    const startValue = useSelector<AppRootStateType, number>(state => state.counter.startValue)
+    const startValueError = useSelector<AppRootStateType, boolean>(state => state.counter.startValueError)
 
-    const [startValueInput, setStartValueInput] = useState(defaultStartValue)
-    const [startValueInputError, setStartValueInputError] = useState(false)
-
-    const [maxValueInput, setMaxValueInput] = useState(defaultMaxValue)
-    const [maxValueInputError, setMaxValueInputError] = useState(false)
+    const maxValue = useSelector<AppRootStateType, number>(state => state.counter.maxValue)
+    const maxValueError = useSelector<AppRootStateType, boolean>(state => state.counter.maxValueError)
+    // const [startValueInput, setStartValueInput] = useState(startValue)
+    // const [startValueInputError, setStartValueInputError] = useState(false)
+    //
+    // const [maxValueInput, setMaxValueInput] = useState(maxValue)
+    // const [maxValueInputError, setMaxValueInputError] = useState(false)
 
     const [disSetButton, setDisSetButton] = useState(false)
 
     const inputValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.currentTarget.name === 'maxValueInput') {
-            if (Number(e.currentTarget.value) <= startValueInput) {
-                setMaxValueInputError(true)
+            if (Number(e.currentTarget.value) <= startValue) {
                 getSettingError(true)
             } else {
-                setMaxValueInputError(false)
-                setStartValueInputError(false)
                 getSettingError(false)
             }
-            setMaxValueInput(parseInt(e.currentTarget.value))
+            dispatch(setMaxCounterValueAC(parseInt(e.currentTarget.value)))
         } else {
-            if (Number(e.currentTarget.value) < 0 || Number(e.currentTarget.value) >= maxValueInput) {
-                setStartValueInputError(true)
+            if (Number(e.currentTarget.value) < 0 || Number(e.currentTarget.value) >= maxValue) {
                 getSettingError(true)
             } else {
-                setStartValueInputError(false)
-                setMaxValueInputError(false)
                 getSettingError(false)
             }
-            setStartValueInput(Number(e.currentTarget.value))
-            setCounterValue(Number(e.currentTarget.value))
+            dispatch(setMinCounterValueAC(parseInt(e.currentTarget.value)))
         }
         setDisSetButton(false)
         setIsValueSet(false)
@@ -72,8 +57,8 @@ export const CounterSettings = ({
         setIsValueSet(true)
         // localStorage.setItem('maxValue', JSON.stringify(maxValueInput))
         // localStorage.setItem('startValue', JSON.stringify(startValueInput))
-        setDefaultStartValue(startValueInput)
-        setDefaultMaxValue(maxValueInput)
+        // setDefaultStartValue(startValueInput)
+        // setDefaultMaxValue(maxValueInput)
     }
 
     const chooseButtonHandler = () => {
@@ -85,24 +70,24 @@ export const CounterSettings = ({
             <S.InputWrapperStyle>
                 <FlexWrapper $justify={'space-between'}>
                     <span>max value</span>
-                    <S.StyledInput $bgc={maxValueInputError ? theme.color.error.font : 'white'}
+                    <S.StyledInput $bgc={maxValueError ? theme.color.error.font : 'white'}
                                    type="number"
                                    onChange={inputValueHandler}
-                                   value={maxValueInput}
+                                   value={maxValue}
                                    name={'maxValueInput'}/>
                 </FlexWrapper>
                 <FlexWrapper $justify={'space-between'}>
                     <span>start value</span>
-                    <S.StyledInput $bgc={startValueInputError ? theme.color.error.font : 'white'}
+                    <S.StyledInput $bgc={startValueError ? theme.color.error.font : 'white'}
                                    type="number"
                                    onChange={inputValueHandler}
-                                   value={startValueInput}
+                                   value={startValue}
                                    name={'startValueInput'}/>
                 </FlexWrapper>
             </S.InputWrapperStyle>
             <S.ButtonWrapperStyle $justify={'space-between'}>
                 <Button title={'set'} onClick={setButtonHandler}
-                        isDisabled={maxValueInputError || startValueInputError || disSetButton}/>
+                        isDisabled={maxValueError || startValueError || disSetButton}/>
                 <Button title={'choose version'} onClick={chooseButtonHandler}/>
             </S.ButtonWrapperStyle>
         </S.CounterSettingsWrapperStyle>
