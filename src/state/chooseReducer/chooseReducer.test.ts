@@ -2,7 +2,7 @@ import {
     counterReducer,
     CounterType,
     increaseCounterAC,
-    resetCounterAC,
+    resetCounterAC, setErrorAC, setIsValueSetAC,
     setMaxCounterValueAC,
     setMinCounterValueAC
 } from "./counterReducer";
@@ -19,6 +19,8 @@ beforeEach(()=>{
         currentValue: 0,
         incButtonError: false,
         resetButtonError: true,
+        error: false,
+        isValueSet: false
     }
 })
 test('start value should be increased by 1', () => {
@@ -88,3 +90,17 @@ test('if somebody set incorrect start value counter, then startValue should numb
     expect(endState.startValueError).toBeTruthy()
 })
 
+
+test('if something set opposite error value, then error value should be !error', () => {
+    const action = setErrorAC(true)
+    let endState = counterReducer(startState, action)
+
+    expect(endState.error).toBe(!startState.error)
+})
+
+test('if something set opposite isValueSet, then isValueSet should be !isValueSet', () => {
+    const action = setIsValueSetAC(true)
+    let endState = counterReducer(startState, action)
+
+    expect(endState.isValueSet).toBe(!startState.isValueSet)
+})
