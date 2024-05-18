@@ -1,29 +1,38 @@
 import React from 'react';
-import {VersionType} from "../state/chooseReducer/chooseVersionReducer";
+import { VersionType} from "../state/chooseReducer/chooseVersionReducer";
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "../state/store";
-import {CounterDisplay} from "./CounterDisplay/CounterDisplay";
-import {CounterSettings} from "./CounterSettings/CounterSettings";
+import {CounterV1} from "./CounterV1";
+import {CounterV2} from "./CounterV2";
 
-
-
+type CounterReturnType = {
+    [key:string] : JSX.Element
+}
 export const Counter = () => {
-    const isValueSet = useSelector<AppRootStateType, boolean>(state => state.counter.isValueSet)
     const version = useSelector<AppRootStateType, VersionType>(state => state.chooseVersion.version)
 
-    return (
-        version === 'v1'
-            ? isValueSet
-                ? <CounterDisplay/>
-                : <CounterSettings/>
-            : <>
-                <CounterSettings/>
-                <CounterDisplay/>
-            </>
-    )
+    const counter:CounterReturnType = {
+        [VersionType.V1]: <CounterV1/>,
+        [VersionType.V2]: <CounterV2/>
+    }
+
+    return counter[version]
 };
 
 
+//1) Стоит ли выносить логику в отдельный редюсер? если да то как можно это сделать?
+//2) когда идет выбор версии в редюсере счетчика как в кейсе на смену версии обнулить значения счетчика кроме макс значения
+// 3) когда идет смена версий в редюсере счетчика payload в AC не используется. Это норма практика или нужно так писать чтобы объект создаваемый AC использовался весь?
+// 4) лучше брять и прописывать каждый юсселектор на каждую переменную или взять весь стейст и через точечную нотацию обращатся? (см. CounterDisplay)
+// 5) нормально ли брать перменные из старого стейта в редюсерах например state.startValue при RESET-COUNTER?
+
+
+// поправить Button
+// убрать логику дизейблов из стейта в компонет рядом с кнопками
+// использовать для стейта версий enum
+// переделать обратно на компоненты CounterV1, CounterV2 так как это расширяет на будущее добавление/расширение приложения
+// по хорошему нужно CounterDisplay на каждую версию своя компонента из за будущего расширения приложения
+// нужна обработка ввода дробных чисел - выкидывать ошибку должно
 
 
 
@@ -34,34 +43,3 @@ export const Counter = () => {
 
 
 
-
-
-
-
-
-
-
-
-// У меня один редьюсер, 4 экшена, 1 мидлваре.
-//     Начальные значения:
-//     const initialState = {
-//         maxValue: 10,
-//         defaultValue: 0,
-//         alarmValue: 5,
-//         statusMessage: STATUS.PENDING,
-//         count: 0,
-//     };
-// Состояние приложения:
-//     export enum STATUS {
-//         MAX_LESS_0 = "Max value can't be less than 0",
-//         DEF_LESS_0 = "Default value can't be less than 0",
-//         ALARM_LESS_0 = "Alarm value can't be less than 0",
-//         EQUAL = "Values can't be equal",
-//         MAX_LESS_DEF = "Max value can't be less then default value",
-//         PENDING = "Set values",
-//         EMPTY = "none",
-//     }
-// 4 Экшена: increment, reset, setCount, setConditions
-// 1 миддлвэре, который проверяет текущий стейт и задает состояние приложения
-
-// Я затупил и вот это, когда красненьким цифра зажигается, у меня тоже менять можно. Потом решил уже не убирать.

@@ -15,76 +15,62 @@ export type CounterReducerActionType =
 
 export type CounterType = {
     startValue: number
-    startValueError: boolean
     maxValue: number
-    maxValueError: boolean
     currentValue: number
-    incButtonError: boolean
-    resetButtonError: boolean
     isValueSet: boolean
 }
 
 export const initialCounterState: CounterType = {
     startValue: 0,
-    startValueError: false,
     maxValue: 3,
-    maxValueError: false,
-
     currentValue: 0,
-
-    incButtonError: false,
-    resetButtonError: true,
-
     isValueSet: false
 }
 
 export const counterReducer = (state: CounterType = initialCounterState, action: CounterReducerActionType): CounterType => {
     switch (action.type) {
-        case "INCREASE-COUNTER":
+        case "INCREASE-COUNTER": {
             return {
                 ...state,
                 currentValue: state.currentValue + 1,
-                incButtonError: state.currentValue + 1 === state.maxValue,
-                resetButtonError: false
             }
-        case "RESET-COUNTER":
+        }
+        case "RESET-COUNTER": {
             return {
                 ...state,
                 currentValue: state.startValue,
-                incButtonError: false,
-                resetButtonError: true}
-        case "SET-MIN-COUNTER-VALUE":
+            }
+        }
+        case "SET-MIN-COUNTER-VALUE": {
             return {
                 ...state,
                 startValue: action.payload.value,
-                currentValue: action.payload.value,
-                startValueError: false,
-                maxValueError: action.payload.value < 0 || action.payload.value >= state.maxValue
+                currentValue: action.payload.value
             }
-        case "SET-MAX-COUNTER-VALUE":
+        }
+        case "SET-MAX-COUNTER-VALUE": {
             return {
                 ...state,
                 maxValue: action.payload.value,
-                maxValueError: false,
-                startValueError: state.startValue >= action.payload.value
             }
-        case "SET-IS-VALUE-SET-VALUE":
+        }
+        case "SET-IS-VALUE-SET-VALUE": {
+            const {maxValue, isValueSet, startValue,...rest} = initialCounterState
             return {
                 ...state,
+                ...rest,
                 isValueSet: action.payload.isValueSet,
-                currentValue: state.startValue
+                startValue: state.startValue,
+                maxValue: state.maxValue
             }
-        case "CHANGE-VERSION":
+        }
+        case "CHANGE-VERSION": {
+            const {maxValue, ...rest} = initialCounterState
             return {
                 ...state,
-                startValue: 0,
-                startValueError: false,
-                maxValueError: false,
-                currentValue: 0,
-                incButtonError: false,
-                resetButtonError: true,
-                isValueSet: false
+                ...rest
             }
+        }
         default:
             return state
     }

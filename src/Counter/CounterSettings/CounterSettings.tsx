@@ -5,24 +5,20 @@ import {Button} from "../../components/Button/Button";
 import {FlexWrapper} from "../../components/FlexWrapper";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../state/store";
-import {
-    setIsValueSetAC,
-    setMaxCounterValueAC,
-    setMinCounterValueAC
-} from "../../state/counterReducer/counterReducer";
-import {changeVersionAC} from "../../state/chooseReducer/chooseVersionReducer";
+import {setIsValueSetAC, setMaxCounterValueAC, setMinCounterValueAC} from "../../state/counterReducer/counterReducer";
+import {changeVersionAC, VersionType} from "../../state/chooseReducer/chooseVersionReducer";
+import {getValidationRules} from "../../helpers/getValidationRules";
 
 export const CounterSettings = () => {
     const startValue = useSelector<AppRootStateType, number>(state => state.counter.startValue)
-    const startValueError = useSelector<AppRootStateType, boolean>(state => state.counter.startValueError)
-
     const maxValue = useSelector<AppRootStateType, number>(state => state.counter.maxValue)
-    const maxValueError = useSelector<AppRootStateType, boolean>(state => state.counter.maxValueError)
+    const counterValue = useSelector<AppRootStateType, number>(state => state.counter.currentValue)
+
+    let {isStartValueInputError, isMaxValueInputError, ...rest} = getValidationRules(startValue, maxValue, counterValue)
 
     const isValueSet = useSelector<AppRootStateType, boolean>(state => state.counter.isValueSet)
 
     const dispatch = useDispatch()
-
 
     const inputValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.currentTarget.name === 'maxValueInput') {
@@ -30,27 +26,23 @@ export const CounterSettings = () => {
         } else {
             dispatch(setMinCounterValueAC(parseInt(e.currentTarget.value)))
         }
-        // setDisSetButton(false)
         dispatch(setIsValueSetAC(false))
     }
 
     const setButtonHandler = () => {
-        // setDisSetButton(true)
-        dispatch(setIsValueSetAC(!isValueSet))
+        dispatch(setIsValueSetAC(true))
     }
 
-    const chooseButtonHandler = () => {
-        dispatch(changeVersionAC(''))
-    }
 
-    const disableButtonBooleanLogic = maxValueError || startValueError || isValueSet
+
+    const isButtonDisabled = isMaxValueInputError || isStartValueInputError || isValueSet
 
     return (
         <S.CounterSettingsWrapperStyle $direction={'column'} $gap={'10px'} $align={'center'}>
             <S.InputWrapperStyle>
                 <FlexWrapper $justify={'space-between'}>
                     <span>max value</span>
-                    <S.StyledInput $bgc={maxValueError ? theme.color.error.font : 'white'}
+                    <S.StyledInput $bgc={isMaxValueInputError ? theme.color.error.font : 'white'}
                                    type="number"
                                    onChange={inputValueHandler}
                                    value={maxValue}
@@ -58,17 +50,15 @@ export const CounterSettings = () => {
                 </FlexWrapper>
                 <FlexWrapper $justify={'space-between'}>
                     <span>start value</span>
-                    <S.StyledInput $bgc={startValueError ? theme.color.error.font : 'white'}
+                    <S.StyledInput $bgc={isStartValueInputError ? theme.color.error.font : 'white'}
                                    type="number"
                                    onChange={inputValueHandler}
                                    value={startValue}
                                    name={'startValueInput'}/>
                 </FlexWrapper>
             </S.InputWrapperStyle>
-            <S.ButtonWrapperStyle $justify={'space-between'}>
-                <Button title={'set'} onClick={setButtonHandler}
-                        isDisabled={disableButtonBooleanLogic}/>
-                <Button title={'choose version'} onClick={chooseButtonHandler}/>
+            <S.ButtonWrapperStyle $justify={'center'}>
+                <Button onClick={setButtonHandler} disabled={isButtonDisabled}>set values</Button>
             </S.ButtonWrapperStyle>
         </S.CounterSettingsWrapperStyle>
     );

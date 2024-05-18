@@ -1,12 +1,16 @@
 
-
-export type VersionType =  '' | 'v1' | 'v2'
+export enum VersionType {
+    V1='v1',
+    V2='v2',
+    NONE=''
+}
+// export type VersionType =  '' | 'v1' | 'v2'
 export type ChooseVersionType =  {
     version: VersionType
 }
 
 const initialState:ChooseVersionType = {
-    version: ''
+    version: VersionType.NONE
 }
 
 export type ChooseReducerActionType = ReturnType<typeof changeVersionAC>

@@ -1,14 +1,14 @@
-import {changeVersionAC, chooseVersionReducer, ChooseVersionType} from "./chooseVersionReducer";
+import {changeVersionAC, chooseVersionReducer, ChooseVersionType, VersionType} from "./chooseVersionReducer";
 
 let startState: ChooseVersionType
 
 beforeEach(()=>{
     startState = {
-        version: ''
+        version: VersionType.NONE
     }
 })
 test('start value should be increased by 1', () => {
-    const action = changeVersionAC("v1")
+    const action = changeVersionAC(VersionType.V1)
     const endState = chooseVersionReducer(startState, action)
 
     expect(endState.version).toBe('v1')
