@@ -1,43 +1,67 @@
-import React, {useState} from 'react';
-import {CounterV1} from "./CounterV1";
-import {CounterV2} from "./CounterV2";
+import React from 'react';
+import {VersionType} from "../state/chooseReducer/chooseVersionReducer";
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "../state/store";
+import {CounterDisplay} from "./CounterDisplay/CounterDisplay";
+import {CounterSettings} from "./CounterSettings/CounterSettings";
 
-type CounterPropsType = {
-    version: string
-    setChooseV: (ver: string) => void
-}
 
-export const Counter = ({version, setChooseV}: CounterPropsType) => {
-    const [error, setError] = useState(false)
-    const [isValueSet, setIsValueSet] = useState(false)
 
-    const setSettings = () => {
-        setIsValueSet(false)
-    }
-
-    const getSettingError = (settingError: boolean) => {
-        setError(settingError)
-    }
+export const Counter = () => {
+    const isValueSet = useSelector<AppRootStateType, boolean>(state => state.counter.isValueSet)
+    const version = useSelector<AppRootStateType, VersionType>(state => state.chooseVersion.version)
 
     return (
         version === 'v1'
-            ? (<CounterV1
-            setIsValueSet={setIsValueSet}
-            getSettingError={getSettingError}
-            setChooseV={setChooseV}
-            error={error}
-            isValueSet={isValueSet}
-            setSettings={setSettings}
-            version={version}
-        />)
-        : (<CounterV2
-            setIsValueSet={setIsValueSet}
-            getSettingError={getSettingError}
-            setChooseV={setChooseV}
-            error={error}
-            isValueSet={isValueSet}
-            setSettings={setSettings}
-            version={version}
-        />)
+            ? isValueSet
+                ? <CounterDisplay/>
+                : <CounterSettings/>
+            : <>
+                <CounterSettings/>
+                <CounterDisplay/>
+            </>
     )
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// У меня один редьюсер, 4 экшена, 1 мидлваре.
+//     Начальные значения:
+//     const initialState = {
+//         maxValue: 10,
+//         defaultValue: 0,
+//         alarmValue: 5,
+//         statusMessage: STATUS.PENDING,
+//         count: 0,
+//     };
+// Состояние приложения:
+//     export enum STATUS {
+//         MAX_LESS_0 = "Max value can't be less than 0",
+//         DEF_LESS_0 = "Default value can't be less than 0",
+//         ALARM_LESS_0 = "Alarm value can't be less than 0",
+//         EQUAL = "Values can't be equal",
+//         MAX_LESS_DEF = "Max value can't be less then default value",
+//         PENDING = "Set values",
+//         EMPTY = "none",
+//     }
+// 4 Экшена: increment, reset, setCount, setConditions
+// 1 миддлвэре, который проверяет текущий стейт и задает состояние приложения
+
+// Я затупил и вот это, когда красненьким цифра зажигается, у меня тоже менять можно. Потом решил уже не убирать.
