@@ -45,7 +45,6 @@ export const counterReducer = (state: CounterType = initialCounterState, action:
             return {
                 ...state,
                 startValue: action.payload.value,
-                currentValue: action.payload.value
             }
         }
         case "SET-MAX-COUNTER-VALUE": {
@@ -55,13 +54,10 @@ export const counterReducer = (state: CounterType = initialCounterState, action:
             }
         }
         case "SET-IS-VALUE-SET-VALUE": {
-            const {maxValue, isValueSet, startValue,...rest} = initialCounterState
             return {
                 ...state,
-                ...rest,
                 isValueSet: action.payload.isValueSet,
-                startValue: state.startValue,
-                maxValue: state.maxValue
+                currentValue: state.startValue,
             }
         }
         case "CHANGE-VERSION": {
