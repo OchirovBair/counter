@@ -1,15 +1,14 @@
 import React from 'react';
-import { VersionType} from "../state/chooseReducer/chooseVersionReducer";
-import {useSelector} from "react-redux";
-import {AppRootStateType} from "../state/store";
+import {VersionType} from "../state/chooseReducer/chooseVersionReducer";
 import {CounterV1} from "./CounterV1";
 import {CounterV2} from "./CounterV2";
+import {useAppSelector} from "../hooks/hooks";
 
 type CounterReturnType = {
     [key:string] : JSX.Element
 }
 export const Counter = () => {
-    const version = useSelector<AppRootStateType, VersionType>(state => state.chooseVersion.version)
+    const version = useAppSelector(state => state.chooseVersion.version)
 
     const counter:CounterReturnType = {
         [VersionType.V1]: <CounterV1/>,

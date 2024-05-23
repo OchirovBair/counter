@@ -1,15 +1,14 @@
 import React from 'react';
 import {CounterDisplay} from "./CounterDisplay/CounterDisplay";
 import {CounterSettings} from "./CounterSettings/CounterSettings";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../state/store";
+import {useDispatch} from "react-redux";
 import {Button} from "../components/Button/Button";
 import {changeVersionAC, VersionType} from "../state/chooseReducer/chooseVersionReducer";
-import {FlexWrapper} from "../components/FlexWrapper";
+import {useAppSelector} from "../hooks/hooks";
 
 
 export const CounterV1 = () => {
-    const isValueSet = useSelector<AppRootStateType, boolean>(state => state.counter.isValueSet)
+    const isValueSet = useAppSelector(state => state.counter.isValueSet)
     const dispatch = useDispatch()
     const chooseButtonHandler = () => {
         dispatch(changeVersionAC(VersionType.NONE))

@@ -2,18 +2,18 @@ import React from 'react';
 import {S} from "./CounterDisplay_Style";
 import {theme} from "../../styles/theme";
 import {Button} from "../../components/Button/Button";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../../state/store";
+import {useDispatch} from "react-redux";
 import {increaseCounterAC, resetCounterAC, setIsValueSetAC} from "../../state/counterReducer/counterReducer";
 import {VersionType} from "../../state/chooseReducer/chooseVersionReducer";
 import {getValidationRules} from "../../helpers/getValidationRules";
+import {useAppSelector} from "../../hooks/hooks";
 
 export const CounterDisplay = () => {
-        const startValue = useSelector<AppRootStateType, number>(state => state.counter.startValue)
-        const maxValue = useSelector<AppRootStateType, number>(state => state.counter.maxValue)
-        const counterValue = useSelector<AppRootStateType, number>(state => state.counter.currentValue)
-        const isValueSet = useSelector<AppRootStateType, boolean>(state => state.counter.isValueSet)
-        const version = useSelector<AppRootStateType, VersionType>(state => state.chooseVersion.version)
+        const startValue = useAppSelector(state => state.counter.startValue)
+        const maxValue = useAppSelector(state => state.counter.maxValue)
+        const counterValue = useAppSelector(state => state.counter.currentValue)
+        const isValueSet = useAppSelector(state => state.counter.isValueSet)
+        const version = useAppSelector(state => state.chooseVersion.version)
 
         const {isStartValueInputError, isMaxValueInputError, isIncButtonDisabled, isResetButtonDisabled} = getValidationRules(startValue, maxValue, counterValue)
 

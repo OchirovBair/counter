@@ -3,20 +3,19 @@ import {S} from "./CounterSettings_Style";
 import {theme} from "../../styles/theme";
 import {Button} from "../../components/Button/Button";
 import {FlexWrapper} from "../../components/FlexWrapper";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../../state/store";
+import {useDispatch} from "react-redux";
 import {setIsValueSetAC, setMaxCounterValueAC, setMinCounterValueAC} from "../../state/counterReducer/counterReducer";
-import {changeVersionAC, VersionType} from "../../state/chooseReducer/chooseVersionReducer";
 import {getValidationRules} from "../../helpers/getValidationRules";
+import {useAppSelector} from "../../hooks/hooks";
 
 export const CounterSettings = () => {
-    const startValue = useSelector<AppRootStateType, number>(state => state.counter.startValue)
-    const maxValue = useSelector<AppRootStateType, number>(state => state.counter.maxValue)
-    const counterValue = useSelector<AppRootStateType, number>(state => state.counter.currentValue)
+    const startValue = useAppSelector(state => state.counter.startValue)
+    const maxValue = useAppSelector(state => state.counter.maxValue)
+    const counterValue = useAppSelector(state => state.counter.currentValue)
 
     let {isStartValueInputError, isMaxValueInputError, ...rest} = getValidationRules(startValue, maxValue, counterValue)
 
-    const isValueSet = useSelector<AppRootStateType, boolean>(state => state.counter.isValueSet)
+    const isValueSet = useAppSelector(state => state.counter.isValueSet)
 
     const dispatch = useDispatch()
 
