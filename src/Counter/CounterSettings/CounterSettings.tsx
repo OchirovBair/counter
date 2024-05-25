@@ -7,15 +7,15 @@ import {useDispatch} from "react-redux";
 import {setIsValueSetAC, setMaxCounterValueAC, setMinCounterValueAC} from "../../state/counterReducer/counterReducer";
 import {getValidationRules} from "../../helpers/getValidationRules";
 import {useAppSelector} from "../../hooks/hooks";
+import {counterSelectors} from "../../state/selectors";
 
 export const CounterSettings = () => {
-    const startValue = useAppSelector(state => state.counter.startValue)
-    const maxValue = useAppSelector(state => state.counter.maxValue)
-    const counterValue = useAppSelector(state => state.counter.currentValue)
+    const startValue = useAppSelector(counterSelectors.startValue)
+    const maxValue = useAppSelector(counterSelectors.maxValue)
+    const counterValue = useAppSelector(counterSelectors.currentValue)
+    const isValueSet = useAppSelector(counterSelectors.isValueSet)
 
     let {isStartValueInputError, isMaxValueInputError, ...rest} = getValidationRules(startValue, maxValue, counterValue)
-
-    const isValueSet = useAppSelector(state => state.counter.isValueSet)
 
     const dispatch = useDispatch()
 

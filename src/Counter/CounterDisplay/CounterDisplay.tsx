@@ -7,13 +7,15 @@ import {increaseCounterAC, resetCounterAC, setIsValueSetAC} from "../../state/co
 import {VersionType} from "../../state/chooseReducer/chooseVersionReducer";
 import {getValidationRules} from "../../helpers/getValidationRules";
 import {useAppSelector} from "../../hooks/hooks";
+import {counterSelectors, versionSelectors} from "../../state/selectors";
+
 
 export const CounterDisplay = () => {
-        const startValue = useAppSelector(state => state.counter.startValue)
-        const maxValue = useAppSelector(state => state.counter.maxValue)
-        const counterValue = useAppSelector(state => state.counter.currentValue)
-        const isValueSet = useAppSelector(state => state.counter.isValueSet)
-        const version = useAppSelector(state => state.chooseVersion.version)
+        const startValue = useAppSelector(counterSelectors.startValue)
+        const maxValue = useAppSelector(counterSelectors.maxValue)
+        const counterValue = useAppSelector(counterSelectors.currentValue)
+        const isValueSet = useAppSelector(counterSelectors.isValueSet)
+        const version = useAppSelector(versionSelectors.version)
 
         const {isStartValueInputError, isMaxValueInputError, isIncButtonDisabled, isResetButtonDisabled} = getValidationRules(startValue, maxValue, counterValue)
 

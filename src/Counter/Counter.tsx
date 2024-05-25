@@ -3,12 +3,13 @@ import {VersionType} from "../state/chooseReducer/chooseVersionReducer";
 import {CounterV1} from "./CounterV1";
 import {CounterV2} from "./CounterV2";
 import {useAppSelector} from "../hooks/hooks";
+import {versionSelectors} from "../state/selectors";
 
 type CounterReturnType = {
     [key:string] : JSX.Element
 }
 export const Counter = () => {
-    const version = useAppSelector(state => state.chooseVersion.version)
+    const version = useAppSelector(versionSelectors.version)
 
     const counter:CounterReturnType = {
         [VersionType.V1]: <CounterV1/>,

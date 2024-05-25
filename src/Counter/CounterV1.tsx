@@ -5,10 +5,11 @@ import {useDispatch} from "react-redux";
 import {Button} from "../components/Button/Button";
 import {changeVersionAC, VersionType} from "../state/chooseReducer/chooseVersionReducer";
 import {useAppSelector} from "../hooks/hooks";
+import {counterSelectors} from "../state/selectors";
 
 
 export const CounterV1 = () => {
-    const isValueSet = useAppSelector(state => state.counter.isValueSet)
+    const isValueSet = useAppSelector(counterSelectors.isValueSet)
     const dispatch = useDispatch()
     const chooseButtonHandler = () => {
         dispatch(changeVersionAC(VersionType.NONE))

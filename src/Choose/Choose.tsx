@@ -5,10 +5,11 @@ import {S} from "./Choose_Style";
 import {useDispatch} from "react-redux";
 import {changeVersionAC, VersionType} from "../state/chooseReducer/chooseVersionReducer";
 import {useAppSelector} from "../hooks/hooks";
+import {versionSelectors} from "../state/selectors";
 
 
 export const Choose = () => {
-    const version = useAppSelector(state => state.chooseVersion.version)
+    const version = useAppSelector(versionSelectors.version)
     const dispatch = useDispatch()
     const changeVersionHandler = (version:VersionType) => {
         dispatch(changeVersionAC(version))
