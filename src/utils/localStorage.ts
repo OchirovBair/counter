@@ -1,6 +1,6 @@
-import {CounterType} from "../state/counterReducer/counterReducer";
+import {AppRootStateType} from "../state/store";
 
-export const loadState = ():CounterType | undefined => {
+export const loadState = () => {
     console.log('load')
     try {
         const serializedState = localStorage.getItem('state');
@@ -13,7 +13,7 @@ export const loadState = ():CounterType | undefined => {
     }
 };
 
-export const saveState = (state:CounterType) => {
+export const saveState = (state:AppRootStateType) => {
     console.log('save')
     try {
         const serializedState = JSON.stringify(state);
