@@ -1,4 +1,5 @@
 import {ChooseReducerActionType} from "../chooseReducer/chooseVersionReducer";
+import {loadState} from "../../utils/localStorage";
 
 type IncreaseCounterActionType = ReturnType<typeof increaseCounterAC>
 type ResetCounterActionType = ReturnType<typeof resetCounterAC>
@@ -21,8 +22,8 @@ export type CounterType = {
 }
 
 export const initialCounterState: CounterType = {
-    startValue: 0,
-    maxValue: 3,
+    startValue: loadState()?.startValue ?? 0,
+    maxValue: loadState()?.maxValue ?? 3,
     currentValue: 0,
     isValueSet: false
 }
